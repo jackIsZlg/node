@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0, width=device-width">
+    <style>
+       .flex{
+           display: flex;
+           width: 80px;
+           height: 80px;
+           background: yellow;
+           flex-direction: row;
+           flex-wrap: wrap;
+           justify-content: space-between;
+           align-items: center;
+       }
+       .flex span{
+           display: inline-block;
+           width: 20px;
+           height: 20px;
+           background: red;
+       }
+        .flex1{
+            display: flex;
+        }
+       .flex1 input{
+           flex: 0 0 20%;
+           width: 60px;
+           height: 30px;
+       }
+       .flex1 span{
+           display: inline-block;
+           height: 30px;
+           line-height: 30px;
+       }
+    </style>
+</head>
+<body>
+   <div id="app">
+       <button @click="aa">1111</button>
+       <div class="flex">
+           <span>1</span>
+           <span>2</span>
+           <span>3</span>
+           <span style="order: 0">4</span>
+           <span>5</span>
+           <span>6</span>
+           <span>7</span>
+       </div>
+       <div class="flex1">
+           <input />
+           <span>1111</span>
+       </div>
+       <form action="http://127.0.0.1:3000/api/upExcel" method="post" enctype='multipart/form-data'>
+           <h4>上传excel:</h4>
+           <input type="file" name="file" id="1"/>
+           <input type='text' name='user' value='charlene'/>
+           <button type="submit">上传excel表</button>
+       </form>
+       <component-a :filter.sync="file" v-if="show"/>
+   </div>
+</body>
+<script type="text/javascript" src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js" ></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
+<script>
+
+ var componentA = Vue.component('componentA', {
+    data: function () {
+      return {
+        count: 0,
+
+      }
+    },
+    mounted(){
+       console.log(this.filter);
+        let vm = this;
+        document.body.addEventListener('click',this.cc,false)
+      //   setTimeout(function() {
+      //   console.log(222);
+      //   console.log(vm.filter);
+      // },2000)
+    },
+   destroyed(){
+      console.log(33333);
+      document.body.removeEventListener('click',this.cc,false)
+   },
+   beforeDestroy(){
+      console.log(222);
+      document.body.removeEventListener('click',this.cc,false)
+   },
+   methods:{
+     bb:function() {
+        this.count ++;
+        console.log(this.filter);
+     },
+     cc:function() {
+       console.log(1);
+     }
+   },
+    props: {
+      filter: Array
+    },
+    watch:{
+      filter:function(val,value) {
+        console.log(val);
+        console.log(value)
+      },
+      immediate: true,
+      deep: true
+    },
+    template: '<button @click="bb">You clicked me {{ count }} times.</button>'
+  })
+
+  var example2 = new Vue({
+    el: '#app',
+    data: {
+       file:{
+         a:1,
+         b:2
+       },
+      show: true,
+    },
+    mounted:function(){
+        let vm = this;
+        $.ajax({
+            url: 'http://127.0.0.1:3000/api/123/post',
+            method: 'POST',
+            data: {
+                value:2,
+                page:1
+            },
+            success: function(data) {
+                console.log(data);
+            }
+        })
+    },
+    methods: {
+       aa:function() {
+         this.file.a = 3;
+         this.show = false;
+           var formData = new FormData();
+           formData.append('file', $('#1')[0].files[0]);
+           formData.append('name', '123');
+           $.ajax({
+               url: 'http://127.0.0.1:3000/api/upExcel',
+               method: 'POST',
+               data: formData,
+               contentType: false, // 注意这里应设为false
+               processData: false,
+               cache: false,
+               success: function(data) {
+                   console.log(data);
+               }
+           })
+       }
+    },
+    watch: {
+      validError:function (curr,old) {
+
+      }
+
+    }
+  })
+</script>
+</html>

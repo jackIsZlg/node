@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=0, width=device-width">
+    <style>
+        .flex{
+            display: flex;
+            width: 80px;
+            height: 80px;
+            background: yellow;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .flex span{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: red;
+        }
+        .flex1{
+            display: flex;
+        }
+        .flex1 input{
+            flex: 0 0 20%;
+            width: 60px;
+            height: 30px;
+        }
+        .flex1 span{
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="app1" >
+    <button @click="button">点击</button>
+</div>
+  <div id="app2" />
+</body>
+<script type="text/javascript" src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js" ></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
+<script>
+
+    var comm = new Vue();
+
+    new Vue({
+        el: '#app1',
+        data: {
+        },
+        methods: {
+            button(){
+                comm.$emit('change',{a:1,b:2}); //Hub触发事件
+            }
+        }
+    })
+
+
+    new Vue({
+        el: '#app2',
+        data: {
+            show: false,
+        },
+        mounted:function(){
+            console.log(this.$data);
+            comm.$on('change',function (value) {
+                console.log(value);
+            })
+        },
+        methods: {
+
+        }
+    })
+
+</script>
+</html>
